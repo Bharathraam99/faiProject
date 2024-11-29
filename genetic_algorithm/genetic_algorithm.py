@@ -20,7 +20,11 @@ class GeneticAlgorithm:
         Initialize a random population of portfolio weights.
         """
         return np.random.dirichlet(np.ones(self.num_assets), size=self.population_size)
-
+    def normalize_fitness(self,fitness_scores):
+        min_fitness = np.min(fitness_scores)
+        if min_fitness < 0:  # Shift scores to be non-negative
+            fitness_scores += abs(min_fitness)
+        return fitness_scores
     def evolve(self):
         """
         Run the Genetic Algorithm.
@@ -28,6 +32,7 @@ class GeneticAlgorithm:
         for generation in range(self.generations):
             fitness_scores = np.array([fitness_function(ind, self.mean_returns, self.covariance_matrix) 
                                         for ind in self.population])
+            fitness_scores = self.normalize_fitness(fitness_scores)
 
             print(f"Generation {generation + 1}: Best Fitness = {max(fitness_scores):.4f}")
 
