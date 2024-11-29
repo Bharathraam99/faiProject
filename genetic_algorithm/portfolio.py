@@ -1,10 +1,15 @@
-'''
-Contains the Portfolio class to represent each portfolio (chromosome).
-'''
-class Portfolio:
-    def __init__(self, weights):
-        self.weights = weights
+import numpy as np
 
-    @staticmethod
-    def random_portfolio(num_assets):
-        return Portfolio([0] * num_assets)
+
+def portfolio_return(weights, mean_returns):
+    """
+    Calculate the expected portfolio return.
+    """
+    return np.dot(weights, mean_returns)
+
+
+def portfolio_risk(weights, covariance_matrix):
+    """
+    Calculate the portfolio risk (standard deviation).
+    """
+    return np.sqrt(np.dot(weights.T, np.dot(covariance_matrix, weights)))
