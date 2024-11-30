@@ -1,42 +1,56 @@
-from portfolio import Portfolio
-from fitness import FitnessEvaluator
-from selection import Selection
-from crossover import Crossover
-from mutation import Mutation
+import numpy as np
+from crossover import crossover
+from mutation import mutate
+from selection import select_parents
+from fitness import fitness_function
+
 
 class GeneticAlgorithm:
-    def __init__(self, returns, covariance, num_assets, population_size=50, num_generations=100, mutation_rate=0.01, crossover_rate=0.7):
-        self.returns = returns
-        self.covariance = covariance
-        self.num_assets = num_assets
+    def __init__(self, mean_returns, covariance_matrix, population_size, generations, mutation_rate):
+        self.mean_returns = mean_returns.values
+        self.covariance_matrix = covariance_matrix.values
         self.population_size = population_size
-        self.num_generations = num_generations
+        self.generations = generations
         self.mutation_rate = mutation_rate
-        self.population = [Portfolio.random_portfolio(num_assets) for _ in range(population_size)]
-        self.fitness_evaluator = FitnessEvaluator(returns, covariance)
+        self.num_assets = len(mean_returns)
+        self.population = self.initialize_population()
 
-    def run(self):
-        return self.population[0]
-        # Initialize the population with random portfolios
+    def initialize_population(self):
+        """
+        Initialize a random population of portfolio weights.
+        """
+        return np.random.dirichlet(np.ones(self.num_assets), size=self.population_size)
+    def normalize_fitness(self,fitness_scores):
+        min_fitness = np.min(fitness_scores)
+        if min_fitness < 0:  # Shift scores to be non-negative
+            fitness_scores += abs(min_fitness)
+        return fitness_scores
+    def evolve(self):
+        """
+        Run the Genetic Algorithm.
+        """
+        for generation in range(self.generations):
+            fitness_scores = np.array([fitness_function(ind, self.mean_returns, self.covariance_matrix) 
+                                        for ind in self.population])
+            fitness_scores = self.normalize_fitness(fitness_scores)
 
-        # For each generation:
-        #     1. Evaluate Fitness:
-        #         - For each portfolio in the population:
-        #             - Calculate its fitness using the fitness function - TODO
-            
-        #     2. Selection:
-        #         - Select pairs of portfolios (parents) based on their fitness scores - TODO
-        #         - Higher fitness portfolios have a higher chance of being selected
-            
-        #     3. Crossover:
-        #         - For each selected pair of parents:
-        #             - Perform crossover to create new offspring (child portfolios) - TODO
-        #             - Add offspring to the new population
-            
-        #     4. Mutation:
-        #         - For each portfolio in the new population:
-        #             - Apply mutation with a certain probability - TODO
-        #             - Mutation randomly adjusts some portfolio weights to maintain diversity
-            
-        #     5. Update Population:
-        #         - Replace the old population with the new population of offspring - TODO
+            print(f"Generation {generation + 1}: Best Fitness = {max(fitness_scores):.4f}")
+
+            next_population = []
+
+            # Elitism: Keep the best-performing portfolio
+            best_individual = self.population[np.argmax(fitness_scores)]
+            next_population.append(best_individual)
+
+            while len(next_population) < self.population_size:
+                parent1, parent2 = select_parents(self.population, fitness_scores)
+                child1, child2 = crossover(parent1, parent2, self.num_assets)
+                next_population.append(mutate(child1, self.mutation_rate))
+                if len(next_population) < self.population_size:
+                    next_population.append(mutate(child2, self.mutation_rate))
+
+            self.population = np.array(next_population)
+
+        best_index = np.argmax([fitness_function(ind, self.mean_returns, self.covariance_matrix) 
+                                for ind in self.population])
+        return self.population[best_index]
