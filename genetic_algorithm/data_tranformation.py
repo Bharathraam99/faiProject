@@ -161,7 +161,7 @@ def prepare_genetic_algo_inputs(input_folder, cleaned_file, output_folder, risk_
 
 
 if __name__ == "__main__":
-    input_folder = "dataset/historical_data"
+    input_folder = "new_dataset/historical_data"
     cleaned_file = "genetic_algorithm/processed_data/cleaned_data.csv"
     output_folder = "genetic_algorithm/processed_data"
 

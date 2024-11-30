@@ -15,7 +15,7 @@ def main():
     mean_returns, covariance_matrix, daily_returns = load_data(mean_returns_file, covariance_file, daily_returns_file)
 
     # Run Genetic Algorithm
-    ga = GeneticAlgorithm(mean_returns, covariance_matrix, population_size=100, generations=500, mutation_rate=0.02)
+    ga = GeneticAlgorithm(mean_returns, covariance_matrix, population_size=100, generations=500, mutation_rate=0.01)
     optimal_weights = ga.evolve()
 
     # Save results

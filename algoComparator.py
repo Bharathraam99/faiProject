@@ -5,12 +5,10 @@ import pandas as pd
 genetic_weights = pd.read_csv('genetic_algorithm/processed_data/optimized_portfolio.csv')["Weight"]
 
 # Mean-Variance Weights
-mean_variance_weights = np.array([0.0, 0.0, 0.0, 0.05011, 0.0, 0.01629, 0.00834, 
-                                   0.0, 0.14477, 0.0, 0.78049, 0.0])
+mean_variance_weights = pd.read_csv('markowitz_mean_variance/markowitz_output.csv')["Weight"]
 
 # Mean Returns
-mean_returns = np.array([0.002955, 0.002096, 0.001718, 0.004714, 0.001863, 0.000767, 
-                          0.032739, 0.002099, 0.004642, 0.002289, 0.007932, 0.001810])
+mean_returns = pd.read_csv('genetic_algorithm/processed_data/mean_returns.csv')["Mean Return"]
 
 # Covariance Matrix (Load from your file)
 covariance_matrix = pd.read_csv("genetic_algorithm/processed_data/covariance_matrix.csv", index_col=0).values
