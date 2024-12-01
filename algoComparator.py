@@ -7,10 +7,12 @@ genetic_weights = pd.read_csv('genetic_algorithm/processed_data/optimized_portfo
 # Mean-Variance Weights
 mean_variance_weights = pd.read_csv('markowitz_mean_variance/markowitz_output.csv')["Weight"]
 
+# Reinforcement Learning Weights
+reinforcement_weights = pd.read_csv('Reinforcement learning/RL_portfolio_weights.csv')["Weight"]
+
 # Mean Returns
 mean_returns = pd.read_csv('genetic_algorithm/processed_data/mean_returns.csv')["Mean Return"]
 
-reinforcement_weights = pd.read_csv('Reinforcement learning/RL_portfolio_weights.csv')["Weight"]
 # Covariance Matrix (Load from your file)
 covariance_matrix = pd.read_csv("genetic_algorithm/processed_data/covariance_matrix.csv", index_col=0).values
 
@@ -24,21 +26,20 @@ def portfolio_performance(weights, mean_returns, covariance_matrix):
     sharpe_ratio = (portfolio_return - risk_free_rate) / portfolio_volatility if portfolio_volatility > 0 else 0
     return portfolio_return, portfolio_volatility, sharpe_ratio
 
-# Genetic Algorithm Performance
+# Calculate Performance for Each Portfolio
 genetic_return, genetic_volatility, genetic_sharpe = portfolio_performance(genetic_weights, mean_returns, covariance_matrix)
-
-# Mean-Variance Performance
-mv_return, mv_volatility, mv_sharpe = portfolio_performance(mean_variance_weights, mean_returns, covariance_matrix)
-
-# Mean-Variance Performance
 rl_return, rl_volatility, rl_sharpe = portfolio_performance(reinforcement_weights, mean_returns, covariance_matrix)
+mv_return, mv_volatility, mv_sharpe = portfolio_performance(mean_variance_weights, mean_returns, covariance_matrix)
 
 # Display Results
 print("Genetic Algorithm Portfolio:")
-print(f"Return: {genetic_return:.6f}, Volatility: {genetic_volatility:.6f}, Sharpe Ratio: {genetic_sharpe:.6f}")
+print(f"With $1000 invested, the portfolio generates an average daily return of ${genetic_return * 1000:.4f}.")
+print(f"The daily volatility (risk) is ±${genetic_volatility * 1000:.4f}, and the Sharpe Ratio (risk-adjusted return) is {genetic_sharpe:.4f}.")
 
 print("\nReinforcement Learning Portfolio:")
-print(f"Return: {rl_return:.6f}, Volatility: {rl_volatility:.6f}, Sharpe Ratio: {rl_sharpe:.6f}")
+print(f"With $1000 invested, the portfolio generates an average daily return of ${rl_return * 1000:.4f}.")
+print(f"The daily volatility (risk) is ±${rl_volatility * 1000:.4f}, and the Sharpe Ratio (risk-adjusted return) is {rl_sharpe:.4f}.")
 
 print("\nMean-Variance Portfolio:")
-print(f"Return: {mv_return:.6f}, Volatility: {mv_volatility:.6f}, Sharpe Ratio: {mv_sharpe:.6f}")
+print(f"With $1000 invested, the portfolio generates an average daily return of ${mv_return * 1000:.4f}.")
+print(f"The daily volatility (risk) is ±${mv_volatility * 1000:.4f}, and the Sharpe Ratio (risk-adjusted return) is {mv_sharpe:.4f}.")
