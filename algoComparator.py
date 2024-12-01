@@ -10,6 +10,7 @@ mean_variance_weights = pd.read_csv('markowitz_mean_variance/markowitz_output.cs
 # Mean Returns
 mean_returns = pd.read_csv('genetic_algorithm/processed_data/mean_returns.csv')["Mean Return"]
 
+reinforcement_weights = pd.read_csv('Reinforcement learning/RL_portfolio_weights.csv')["Weight"]
 # Covariance Matrix (Load from your file)
 covariance_matrix = pd.read_csv("genetic_algorithm/processed_data/covariance_matrix.csv", index_col=0).values
 
@@ -29,9 +30,15 @@ genetic_return, genetic_volatility, genetic_sharpe = portfolio_performance(genet
 # Mean-Variance Performance
 mv_return, mv_volatility, mv_sharpe = portfolio_performance(mean_variance_weights, mean_returns, covariance_matrix)
 
+# Mean-Variance Performance
+rl_return, rl_volatility, rl_sharpe = portfolio_performance(reinforcement_weights, mean_returns, covariance_matrix)
+
 # Display Results
 print("Genetic Algorithm Portfolio:")
 print(f"Return: {genetic_return:.6f}, Volatility: {genetic_volatility:.6f}, Sharpe Ratio: {genetic_sharpe:.6f}")
+
+print("\nReinforcement Learning Portfolio:")
+print(f"Return: {rl_return:.6f}, Volatility: {rl_volatility:.6f}, Sharpe Ratio: {rl_sharpe:.6f}")
 
 print("\nMean-Variance Portfolio:")
 print(f"Return: {mv_return:.6f}, Volatility: {mv_volatility:.6f}, Sharpe Ratio: {mv_sharpe:.6f}")
