@@ -10,26 +10,31 @@ class MarkowitzPortfolioOptimizer:
         Initialize the Markowitz Portfolio Optimizer.
         :param stock_prices: DataFrame with dates as rows and stock prices as columns.
         """
+        if stock_prices.isnull().values.any():
+            raise ValueError("Stock price data contains missing values. Please clean your data.")
+        if not all([np.issubdtype(dtype, np.number) for dtype in stock_prices.dtypes]):
+            raise ValueError("Stock price data contains non-numeric values. Please clean your data.")
+
         self.stock_prices = stock_prices
         self.returns = self.returns_from_prices(stock_prices)
         self.mean_returns = self.returns.mean()
         self.covariance_matrix = self.sample_cov(self.returns)
         self.weights = None
-    
+
     def calculate_daily_returns(self):
         """
         Calculate daily returns from stock prices.
         """
-        return self.stock_prices.pct_change().dropna()
+        return self.stock_prices.pct_change(fill_method=None).dropna()
 
     def returns_from_prices(self, prices, log_returns=False):
         """
         Calculate daily returns from price data.
         """
         if log_returns:
-            returns = np.log(1 + prices.pct_change()).dropna(how="all")
+            returns = np.log(1 + prices.pct_change(fill_method=None)).dropna(how="all")
         else:
-            returns = prices.pct_change().dropna(how="all")
+            returns = prices.pct_change(fill_method=None).dropna(how="all")
         return returns
 
     def check_returns(self, returns):
@@ -68,17 +73,18 @@ class MarkowitzPortfolioOptimizer:
         """
         q, V = np.linalg.eigh(matrix)
         if fix_method == "spectral":
-            q = np.where(q > 0, q, 0)
+            q = np.where(q > 0, q, 0)  # 将负特征值替换为0
             fixed_matrix = V @ np.diag(q) @ V.T
         elif fix_method == "diag":
             min_eig = np.min(q)
-            fixed_matrix = matrix - 1.1 * min_eig * np.eye(len(matrix))
+            fixed_matrix = matrix - (1.1 * min_eig) * np.eye(len(matrix))
         else:
             raise NotImplementedError(f"Method {fix_method} not implemented")
 
         if not self.is_positive_semidefinite(fixed_matrix):
-            warnings.warn("Could not fix matrix. Please try a different risk model.", UserWarning)
+            warnings.warn("Matrix is still not positive semidefinite. Please check your data.", UserWarning)
 
+        # 保留原始DataFrame的索引和列
         if isinstance(matrix, pd.DataFrame):
             tickers = matrix.index
             return pd.DataFrame(fixed_matrix, index=tickers, columns=tickers)
@@ -138,6 +144,8 @@ class MarkowitzPortfolioOptimizer:
             'Weight': self.weights * 100
         })
         return portfolio
+
+
 
 
 # import warnings
