@@ -73,7 +73,7 @@ class MarkowitzPortfolioOptimizer:
         """
         q, V = np.linalg.eigh(matrix)
         if fix_method == "spectral":
-            q = np.where(q > 0, q, 0)  # 将负特征值替换为0
+            q = np.where(q > 0, q, 0)  
             fixed_matrix = V @ np.diag(q) @ V.T
         elif fix_method == "diag":
             min_eig = np.min(q)
@@ -84,7 +84,6 @@ class MarkowitzPortfolioOptimizer:
         if not self.is_positive_semidefinite(fixed_matrix):
             warnings.warn("Matrix is still not positive semidefinite. Please check your data.", UserWarning)
 
-        # 保留原始DataFrame的索引和列
         if isinstance(matrix, pd.DataFrame):
             tickers = matrix.index
             return pd.DataFrame(fixed_matrix, index=tickers, columns=tickers)
