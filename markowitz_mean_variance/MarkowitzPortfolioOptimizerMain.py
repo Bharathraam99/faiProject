@@ -11,6 +11,8 @@ stock_data = stock_data.dropna()
 
 optimizer = MarkowitzPortfolioOptimizer(stock_data)
 
+optimizer.plot_covariance_matrix()
+
 weights_max_sharpe = optimizer.optimize(method='max_sharpe')
 print("Maximum Sharpe Ratio Portfolio Weights:")
 print(optimizer.display_results())

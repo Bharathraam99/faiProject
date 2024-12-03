@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
+import matplotlib.pyplot as plt
+import seaborn as sns
 import warnings
 
 
@@ -95,6 +97,24 @@ class MarkowitzPortfolioOptimizer:
         Calculate the annualized sample covariance matrix.
         """
         return self.fix_nonpositive_semidefinite(returns.cov() * frequency, fix_method)
+    
+    def plot_covariance_matrix(self, cmap='coolwarm', figsize=(10, 8), title='Covariance Matrix Heatmap',vmin=-0.25,vmax=0.25):
+        """
+        Plot the covariance matrix as a heatmap with enhanced contrast.
+        """
+        if self.covariance_matrix is None:
+            raise ValueError("Covariance matrix has not been calculated.")
+
+        plt.figure(figsize=figsize)
+        sns.heatmap(self.covariance_matrix, annot=True, fmt='.2f', cmap=cmap, cbar=True,
+                    xticklabels=self.covariance_matrix.columns,
+                    yticklabels=self.covariance_matrix.index,
+                    square=True, linewidths=0.5, vmin=-0.25,vmax=0.25)
+        plt.title(title)
+        plt.xticks(rotation=45)
+        plt.yticks(rotation=0)
+        plt.tight_layout()
+        plt.show()
 
     def portfolio_performance(self, weights):
         """
@@ -143,6 +163,7 @@ class MarkowitzPortfolioOptimizer:
             'Weight': self.weights * 100
         })
         return portfolio
+    
 
 
 
