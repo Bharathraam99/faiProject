@@ -28,10 +28,6 @@ Our project will focus on portfolio optimization techniques. We aim to evaluate 
 2. Run the MarkowitzPortfolioOptimizerMain.py -> you can get weights max sharpe and weights min variance.
 3. call MarkowitzPortfolioOptimizer(data).plot_covariance_matrix() can let you get covariance matrix.
 
-# Compare Results
-
-1. Run algoComparator.py to get the comparison of all the three models
-
 # Misc
 
 1. If you want the model to be trained on latest data run newDataGeneration.py and run all the models for new portfolio weights
