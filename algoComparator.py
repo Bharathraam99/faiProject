@@ -5,7 +5,7 @@ import pandas as pd
 genetic_weights = pd.read_csv('genetic_algorithm/processed_data/optimized_portfolio.csv')["Weight"]
 
 # Mean-Variance Weights
-mean_variance_weights = pd.read_csv('markowitz_mean_variance/markowitz_output.csv')["Weight"]
+mean_variance_weights = pd.read_csv('markowitz_mean_variance/ouput/markowitz_output.csv')["Weight"]
 
 # Reinforcement Learning Weights
 reinforcement_weights = pd.read_csv('Reinforcement learning/RL_portfolio_weights.csv')["Weight"]
