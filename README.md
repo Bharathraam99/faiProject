@@ -20,7 +20,11 @@ Our project will focus on portfolio optimization techniques. We aim to evaluate 
 
 # Reinforcement Learning
 
-1. TODO
+1. Run Reinforcement Learning /RIL_py.py -> function to Merge the dataset, dataset is woder with an extra column of company name, (cleaned dataset) 
+RIL_new.py -> Visualization Function to generate the pie chart allocating weights to varous stocks and saving the weights allocated to each stock into a csv file for comparison
+
+2. Reinforcement Learning /Reinforcement.py -> Q-learning Agent: Trains an agent to make stock trading decisions (buy, sell, hold) based on historical data.
+Reinforcement.py -> Data Processing: Prepares stock data with technical indicators (e.g., RSI, Moving Averages) for the agent to learn from.
 
 # Markowitz Mean-Variance
 
