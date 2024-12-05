@@ -2,8 +2,6 @@
 
 Our project will focus on portfolio optimization techniques. We aim to evaluate and compare three different algorithms for optimizing a financial stock portfolio, assessing the risk and return. We will implement and analyze Genetic Algorithms, Reinforcement Learning, and the Markowitz Mean-Variance Optimization. These approaches have different methods for balancing both risk and return and will provide a good comparison for finding the optimal technique.
 
-Instructions to run
-
 # General Instruction to see the results of each algorithm and run the comparison chart
 1. Clone the Repo
 2. Genetic Algorithm Results -> genetic_algorithm/processed_data/optimized_portfolio.csv
@@ -11,7 +9,8 @@ Instructions to run
 4. Markowitz Mean Variance Results -> markowitz_mean_variance/ouput/markowitz_output.csv
 5. To see the comparison chart of all the three algorithms run algoComparator.py
 
-Below are steps to retrain each of the algorithms from scratch
+## Below are steps to retrain each of the algorithms from scratch
+
 # Genetic Algorithm
 
 1. Run genetic_algorithm/data_tranformation.py -> Prepares the data (cleaned dataset, covariance matrix, mean returns) from raw data for the genetic algorithm
