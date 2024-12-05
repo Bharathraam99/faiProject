@@ -4,6 +4,14 @@ Our project will focus on portfolio optimization techniques. We aim to evaluate 
 
 Instructions to run
 
+# General Instruction to see the results of each algorithm and run the comparison chart
+1. Clone the Repo
+2. Genetic Algorithm Results -> genetic_algorithm/processed_data/optimized_portfolio.csv
+3. Reinforcement Learning Results -> Reinforcement learning/RL_portfolio_weights.csv
+4. Markowitz Mean Variance Results -> markowitz_mean_variance/ouput/markowitz_output.csv
+5. To see the comparison chart of all the three algorithms run algoComparator.py
+
+Below are steps to retrain each of the algorithms from scratch
 # Genetic Algorithm
 
 1. Run genetic_algorithm/data_tranformation.py -> Prepares the data (cleaned dataset, covariance matrix, mean returns) from raw data for the genetic algorithm
@@ -27,4 +35,4 @@ Instructions to run
 
 # Misc
 
-1. If you want the model to be trained on latest data run newDataGeneration.py
+1. If you want the model to be trained on latest data run newDataGeneration.py and run all the models for new portfolio weights
