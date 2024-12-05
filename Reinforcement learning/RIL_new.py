@@ -129,6 +129,16 @@ def plot_portfolio_allocation(portfolio, merged_data):
     labels = list(final_portfolio_value.keys())
     values = list(final_portfolio_value.values())
 
+    total_value = sum(final_portfolio_value.values())
+    all_companies = merged_data['Company'].unique()
+    weights = {
+        company: (final_portfolio_value.get(company, 0.0) / total_value)
+        for company in all_companies
+    }
+    portfolio_df = pd.DataFrame(list(weights.items()), columns=["Asset", "Weight"])
+    portfolio_df.to_csv("Reinforcement learning/RL_portfolio_weights.csv", index=False)
+    print(f"Portfolio weights saved to RL_portfolio_weights.csv")
+
     plt.figure(figsize=(8, 8))
     plt.pie(values, labels=labels, autopct='%1.2f%%', startangle=140, colors=plt.cm.Paired.colors)
     plt.title("Portfolio Allocation by Company (Excluding Cash)")
